@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Neovis.js Simple Example</title>
+        <style type="text/css">
+            html, body {
+                font: 16pt arial;
+            }
+    
+            #viz {
+                width: 90vw;
+                height: 90vh;
+                border: 1px solid lightgray;
+                font: 22pt arial;
+            }
+        </style>
+    </head>
+    <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+
+    <body onload="draw()">
+        <div id="viz"></div>
+
+  <script type="text/javascript">
+
+        var viz;
+
+        function draw() {
+            var config = {
+                container_id: "viz",
+                server_url: "bolt://localhost:7687",
+                server_user: "neo4j",
+                server_password: "pass",
+                hierarchical: true,
+              hierarchical_sort_method: "directed",
+                labels: {
+                    "Case": {
+                      "caption": "age",
+                      "community": "community",
+                      "size": "infected_to",
+
+                        "title_properties": [
+                            "tag",
+                            "date",
+                            "sex",
+                            "loc",
+                            "age",
+                            "note",
+                          "foreign_history",
+                          "foreigner",
+                        ]
+                    }
+                },
+                relationships: {
+                    "CONTACTED": {
+                        "thickness": "weight",
+                        "caption": false 
+                    }
+                },
+              initial_cypher: "MATCH (r:Case)-[l:CONTACTED]->(c:Case) RETURN * LIMIT 500"
+            };
+
+            viz = new NeoVis.default(config);
+            viz.render();
+        }
+    </script>
+    <button onClick="draw()">
+      draw
+    </button>
+    </body>    
+</html>

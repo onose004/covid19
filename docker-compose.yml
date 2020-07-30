@@ -1,0 +1,20 @@
+version: '2'
+services:
+
+  neo4j:
+    image: neo4j:3.5.8
+    restart: always
+    environment:
+      - NEO4J_dbms_memory_pagecache_size=4G
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.\\\*
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
+    volumes:
+      - ./asset/neo4j/conf:/conf
+      - ./asset/neo4j/logs:/logs
+      - ./asset/neo4j/data:/data
+      - ./asset/neo4j/plugins:/plugins
+    ports:
+      - "7474:7474"
+      - "7687:7687"
