@@ -6,12 +6,26 @@ import pandas as pd
 import re
 import io
 import datetime
+from tqdm import tqdm
 
+pref_obj = {
+    "aichi": {
+        "name": "愛知",
+        "id": 1
+        },
+    "gifu": {
+        "name": "岐阜",
+        "id": 2
+        },
+    "mie": {
+        "name": "三重",
+        "id": 3
+        }
+    }
 
 
 def char_full_to_half(text):
     return text.translate(str.maketrans({chr(0xFF01 + i): chr(0x21 + i) for i in range(94)}))
-
 
 def analyze_note(note):
     bins = str(note).split("県")
@@ -23,7 +37,8 @@ def analyze_note(note):
             if pref_name is "":
                 continue
             obj[pref_name] += person_search
-        pref_search = re.search(r'愛知|岐阜', item)
+        pref_pattern = re.compile('|'.join([pref_obj[key]["name"] for key in pref_obj.keys()]))
+        pref_search = re.search(pref_pattern, item)
         if pref_search:
             pref_name = pref_search.group()
             if pref_name not in obj.keys():
@@ -67,22 +82,22 @@ def analyze_date(date):
 def to_cypher(literal):
     if literal is None:
         return '"情報なし"'
+    if literal is "nan":
+        return '"情報なし"'
     if literal is True:
         return '"はい"'
     if literal is False:
         return '"いいえ"'
     return f'"{literal}"'
 
-def enum(pref):
-    return int(pref.replace("愛知", "1").replace("岐阜", "2"))
+def pref_enum(name):
+    for key in pref_obj.keys():
+        if pref_obj[key]["name"] == name:
+            return pref_obj[key]["id"]
 
-def test(clean=True):
-    url = "http://neo4j:pass@localhost:7474/db/data/"
-    gdb = GraphDatabase(url)
-    if clean:
-        gdb.query("MATCH (a) DETACH DELETE a", data_contents=True)
+def migrate_pref(pref_id, pref_name):
 
-    with open("./migration/data/debug.csv", "r") as csv:
+    with open(f"./data/{pref_id}.csv", "r") as csv:
         with io.StringIO() as f:
             for line in csv:
                 f.write(char_full_to_half(line))
@@ -90,17 +105,20 @@ def test(clean=True):
         with io.StringIO(text) as f:
             df = pd.read_csv(f, header=None)
 
-    df.columns = ["idx", "date", "attr", "note", "misc"]
+    if len(df.columns) == 5:
+        df.columns = ["idx", "date", "attr", "note", "misc"]
+    elif len(df.columns) == 4:
+        df.columns = ["idx", "date", "attr", "note"]
 
     route_tag_list_all = []
 
-    for index, row in df.iterrows():
+    for index, row in tqdm(df.iterrows(), total=df.shape[0], desc=pref_id):
         note_str = row['note']
         route_tag_list = analyze_note(note_str)
         route_tag_list_all = route_tag_list_all + route_tag_list 
         attr_obj = (analyze_attr(str(row['attr'])))
         date_str = analyze_date(row['date'])
-        case_pref = "愛知"
+        case_pref = pref_name
         case_tag = f"{case_pref}_{row['idx']}"
 
         q = (
@@ -113,9 +131,10 @@ def test(clean=True):
                 f'SET c.sex={to_cypher(attr_obj["sex"])} \n'
                 f'SET c.foreigner={to_cypher(attr_obj["foreigner"])} \n'
                 f'SET c.loc={to_cypher(attr_obj["loc"])} \n'
+                f'SET c.pref={to_cypher(case_pref)} \n'
                 f'SET c.age={to_cypher(attr_obj["age"])} \n'
 
-                f'SET c.community={enum(case_pref)} \n'
+                f'SET c.community={pref_enum(case_pref)} \n'
                 f'SET c.infected_to=0 \n'
             )
         gdb.query(q)
@@ -129,12 +148,13 @@ def test(clean=True):
                     f'MERGE (r)-[:CONTACTED]->(c) \n'
                     f'MERGE (r)-[:TESTED_AT]->(pr) \n'
 
-                    f'SET r.community={enum(route_pref)} \n'
+                    f'SET r.pref={to_cypher(route_pref)} \n'
+                    f'SET r.community={pref_enum(route_pref)} \n'
                     f'SET r.infected_to=0 \n'
                 )
             gdb.query(q)
 
-    for route_tag in list(set(route_tag_list_all)):
+    for route_tag in tqdm(list(set(route_tag_list_all)), desc="Analyze network graph"):
         q = (
                 f'MERGE (r {{tag: "{route_tag}"}})-[e:CONTACTED]->(c) \n'
                 f'WITH COUNT(e) as cnt \n'
@@ -145,5 +165,13 @@ def test(clean=True):
 
         gdb.query(q)
 
+if __name__ == '__main__':
+    clean=True
+    url = "http://neo4j:pass@localhost:7474/db/data/"
+    gdb = GraphDatabase(url)
+    if clean:
+        gdb.query("MATCH (a) DETACH DELETE a", data_contents=True)
 
-test()
+    for key in pref_obj.keys():
+        migrate_pref(key, pref_obj[key]["name"])
+
