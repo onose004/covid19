@@ -25,6 +25,7 @@ def test(pref_id):
                     tag_td_list = tag_tr.find_all('td')
                     for tag_td in tag_td_list:
                         col = str(tag_td.string)
+                        col = col.replace(",", "、")
                         f.write(f"{col},")
                     f.write(f"\n")
         with open(f"./data/{pref_id}.csv", "w") as csv:

@@ -23,6 +23,17 @@ pref_obj = {
         }
     }
 
+sex_obj = {
+    "male": {
+        "name": "男性",
+        "id": 1
+        },
+    "female": {
+        "name": "女性",
+        "id": 2
+        },
+    }
+
 
 def char_full_to_half(text):
     return text.translate(str.maketrans({chr(0xFF01 + i): chr(0x21 + i) for i in range(94)}))
@@ -65,7 +76,8 @@ def analyze_attr(attr):
     foreigner_seaerch = re.findall(r'籍', attr)
     if foreigner_seaerch:
         obj["foreigner"] = True
-    sex_search = re.findall(r'男性|女性', attr)
+    sex_pattern = re.compile('|'.join([sex_obj[key]["name"] for key in sex_obj.keys()]))
+    sex_search = re.findall(sex_pattern, attr)
     if sex_search:
         obj["sex"] = sex_search[0]
     age_search = re.findall(r'\([0-9]+.*\)', attr)
@@ -90,10 +102,11 @@ def to_cypher(literal):
         return '"いいえ"'
     return f'"{literal}"'
 
-def pref_enum(name):
-    for key in pref_obj.keys():
-        if pref_obj[key]["name"] == name:
-            return pref_obj[key]["id"]
+def obj_enum(obj, name):
+    for key in obj.keys():
+        if obj[key]["name"] == name:
+            return int(obj[key]["id"])
+    return 9999
 
 def migrate_pref(pref_id, pref_name):
 
@@ -109,6 +122,8 @@ def migrate_pref(pref_id, pref_name):
         df.columns = ["idx", "date", "attr", "note", "misc"]
     elif len(df.columns) == 4:
         df.columns = ["idx", "date", "attr", "note"]
+    else:
+        raise ValueError
 
     route_tag_list_all = []
 
@@ -129,12 +144,13 @@ def migrate_pref(pref_id, pref_name):
                 f'SET c.date=date("{date_str}") \n'
                 f'SET c.foreign_history={to_cypher(attr_obj["foreign_history"])} \n'
                 f'SET c.sex={to_cypher(attr_obj["sex"])} \n'
+                f'SET c.sex_enum={obj_enum(sex_obj, attr_obj["sex"])} \n'
                 f'SET c.foreigner={to_cypher(attr_obj["foreigner"])} \n'
                 f'SET c.loc={to_cypher(attr_obj["loc"])} \n'
                 f'SET c.pref={to_cypher(case_pref)} \n'
+                f'SET c.pref_enum={obj_enum(pref_obj, case_pref)} \n'
                 f'SET c.age={to_cypher(attr_obj["age"])} \n'
 
-                f'SET c.community={pref_enum(case_pref)} \n'
                 f'SET c.infected_to=0 \n'
             )
         gdb.query(q)
@@ -149,7 +165,7 @@ def migrate_pref(pref_id, pref_name):
                     f'MERGE (r)-[:TESTED_AT]->(pr) \n'
 
                     f'SET r.pref={to_cypher(route_pref)} \n'
-                    f'SET r.community={pref_enum(route_pref)} \n'
+                    f'SET r.pref_enum={obj_enum(pref_obj, route_pref)} \n'
                     f'SET r.infected_to=0 \n'
                 )
             gdb.query(q)

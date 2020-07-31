@@ -35,17 +35,17 @@
                 labels: {
                     "Case": {
                       "caption": "age",
-                      "community": "community",
+                      "community": "sex_enum",
                       "size": "infected_to",
 
                         "title_properties": [
-                            "tag",
-                            "date",
-                            "sex",
-                            "loc",
-                            "pref",
-                            "age",
-                            "note",
+                          "tag",
+                          "date",
+                          "sex",
+                          "loc",
+                          "pref",
+                          "age",
+                          "note",
                           "foreign_history",
                           "foreigner",
                         ]
@@ -57,7 +57,7 @@
                         "caption": false 
                     }
                 },
-              initial_cypher: "MATCH (r:Case)-[l:CONTACTED]->(c:Case) RETURN * LIMIT 1000"
+              initial_cypher: "MATCH (r:Case)-[l:CONTACTED]->(c:Case) WHERE c.date > date('2020-07-1') and c.date < date('2020-08-31') RETURN * LIMIT 2000"
             };
 
             viz = new NeoVis.default(config);
