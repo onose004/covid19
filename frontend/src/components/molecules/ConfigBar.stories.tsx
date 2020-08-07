@@ -1,17 +1,20 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
+import {
+  CssBaseline,
+} from '@material-ui/core';  
 import { ThemeProvider } from "@material-ui/styles"
-import Tool from "components/templates/Tool"
 
 
 import theme from 'styles/theme'
+import ConfigBar from 'components/molecules/ConfigBar'
 
-
-storiesOf('Templates/Tool', module)
+storiesOf('Molecules/ConfigBar', module)
   .add('default', () =>
     <ThemeProvider theme={theme}>
-      <Tool />
+      <CssBaseline />
+      <ConfigBar />
     </ThemeProvider>
   )
 

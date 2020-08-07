@@ -3,14 +3,18 @@ import { storiesOf } from '@storybook/react';
 
 import { ThemeProvider } from "@material-ui/styles"
 import {
+  Button,
   CssBaseline,
+  Typography,
 } from '@material-ui/core';  
 
 import theme from 'styles/theme'
-import GraphKnob from 'components/molecules/GraphKnob'
+import KnobDialog from 'components/organisms/KnobDialog'
+import ConfigText from 'components/atoms/ConfigText'
 import { GraphConfig } from 'components/molecules/GraphView'
 
 const Example: React.FC = (props) => {
+  const [open, setOpen] = React.useState(false)
   const [config, setConfig] = React.useState<GraphConfig | undefined>({
     hierarchical: false,
     caption: 'date_label',
@@ -23,17 +27,27 @@ const Example: React.FC = (props) => {
   })
   return(
     <>
-      { config &&
-        <GraphKnob 
+      <Button onClick={() => setOpen(true)}>
+        Open
+      </Button>
+      {config &&
+      <React.Fragment>
+        <Typography>
+          <ConfigText config={config} />
+        </Typography>
+        <KnobDialog 
+          open={open}
+          setOpen={setOpen}
           config={config}
           setConfig={setConfig}
         />
+      </React.Fragment>
       }
-    </>
+      </>
   )
 }
 
-storiesOf('Molecules/GraphKnob', module)
+storiesOf('Organisms/KnobDialog', module)
   .add('default', () =>
     <ThemeProvider theme={theme}>
       <CssBaseline />

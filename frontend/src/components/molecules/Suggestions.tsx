@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     width: "100%",
     textAlign: "center",
-    margin: theme.spacing(1),
+    padding: theme.spacing(1),
   },
   expandLess: {
   },
@@ -72,7 +72,7 @@ const Suggestions: React.FC<{classes?: object}> = (props) => {
               expandIcon: classes.summaryIcon,
           }}
         >
-          <Typography>
+          <Typography variant="caption">
             クラスターを検索する
           </Typography>
         </AccordionSummary>

@@ -1,30 +1,19 @@
 import React from 'react';
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Button,
-  Divider,
   FormControl,
   FormControlLabel,
   InputLabel,
-  Grid,
   MenuItem,
-  Typography,
-  TextField,
   Select,
   Switch,
 
 } from '@material-ui/core';  
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
   DatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import jaLocale from "date-fns/locale/ja";
 import { makeStyles } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandLess';
 
 import { GraphConfig } from 'components/molecules/GraphView'
 import {
@@ -36,63 +25,61 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
   },
   formControl: {
-    display: "block",
-    margin: theme.spacing(0, 0, 2, 0),
-    minWidth: 120,
+    display: "inline-block",
+    margin: theme.spacing(0, 2, 2, 0),
+    minWidth: theme.spacing(10),
   }
 }))
 
 type GraphKnobProps = {
-  config: GraphConfig,
-  setHierarchical: Function,
-  setCaption: Function,
-  setCommunity: Function,
-  setStartDate: Function,
-  setEndDate: Function,
-  setOrder: Function,
-  setMaxNodes: Function,
-  setMinDescendant: Function,
+  config: GraphConfig | undefined,
+  setConfig: Function,
 }
 
 const GraphKnob: React.FC<GraphKnobProps> = (props) => {
   const classes = useStyles()
+  if(!props.config){
+    return(
+      null
+      )
+  }
   return(
     <div className={classes.root}>
       <MuiPickersUtilsProvider
         utils={DateFnsUtils}
       >
-            <DatePicker
-              className={classes.formControl}
-              margin="normal"
-              id="startDatePicker"
-              label="開始日"
-              format="yyyy-MM-dd"
-              disableFuture
-              value={props.config.startDate}
-              maxDate={(props.config.endDate)}
-              onChange={(date) => props.setStartDate(date)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <DatePicker
-              className={classes.formControl}
-              margin="normal"
-              id="endDatePicker"
-              label="終了日"
-              format="yyyy-MM-dd"
-              disableFuture
-              value={props.config.endDate}
-              minDate={(props.config.startDate)}
-              onChange={(date) => props.setEndDate(date)}
-            />
+        <DatePicker
+          className={classes.formControl}
+          margin="normal"
+          id="startDatePicker"
+          label="開始日"
+          format="yyyy-MM-dd"
+          disableFuture
+          value={props.config.startDate}
+          maxDate={(props.config.endDate)}
+          onChange={(date) => props.setConfig({...props.config, startDate: date})}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <DatePicker
+          className={classes.formControl}
+          margin="normal"
+          id="endDatePicker"
+          label="終了日"
+          format="yyyy-MM-dd"
+          disableFuture
+          value={props.config.endDate}
+          minDate={(props.config.startDate)}
+          onChange={(date) => props.setConfig({...props.config, endDate: date})}
+        />
       </MuiPickersUtilsProvider>
       <FormControl className={classes.formControl}>
         <InputLabel id="labelCaption">ラベル</InputLabel>
         <Select
           labelId="labelCaption"
           value={props.config.caption}
-          onChange={(e) => props.setCaption(e.target.value)}
+          onChange={(e) => props.setConfig({...props.config, caption: e.target.value})}
         >
           {Object.keys(optionCaption).map((v, k) => 
             <MenuItem value={(optionCaption[v])}>
@@ -106,7 +93,7 @@ const GraphKnob: React.FC<GraphKnobProps> = (props) => {
         <Select
           labelId="labelCommunity"
           value={props.config.community}
-          onChange={(e) => props.setCommunity(e.target.value)}
+          onChange={(e) => props.setConfig({...props.config, community: e.target.value})}
         >
           {Object.keys(optionCommunity).map((v, k) => 
             <MenuItem value={optionCommunity[v]}>
@@ -120,7 +107,7 @@ const GraphKnob: React.FC<GraphKnobProps> = (props) => {
         <Select
           labelId="labelOrder"
           value={props.config.order}
-          onChange={(e) => props.setOrder(e.target.value)}
+          onChange={(e) => props.setConfig({...props.config, order: e.target.value})}
         >
           {Object.keys(optionOrder).map((v, k) => 
             <MenuItem value={optionOrder[v]}>
@@ -134,7 +121,7 @@ const GraphKnob: React.FC<GraphKnobProps> = (props) => {
         <Select
           labelId="labelMaxNodes"
           value={props.config.maxNodes}
-          onChange={(e) => props.setMaxNodes(e.target.value)}
+          onChange={(e) => props.setConfig({...props.config, maxNodes: e.target.value})}
         >
           {[16, 64, 128, 256, 512, 1024].map((v, k) => 
             <MenuItem value={v}>
@@ -148,7 +135,7 @@ const GraphKnob: React.FC<GraphKnobProps> = (props) => {
         <Select
           labelId="labelMinDescendant"
           value={props.config.minDescendant}
-          onChange={(e) => props.setMinDescendant(e.target.value)}
+          onChange={(e) => props.setConfig({...props.config, minDescendant: e.target.value})}
         >
           {[2, 4, 8, 16, 32, 64].map((v, k) => 
             <MenuItem value={v}>
@@ -159,7 +146,7 @@ const GraphKnob: React.FC<GraphKnobProps> = (props) => {
       </FormControl>
       <FormControlLabel
         control={<Switch checked={props.config.hierarchical}
-          onChange={(h) => props.setHierarchical(h.target.checked)}
+          onChange={(e) => props.setConfig({...props.config, hierarchical: e.target.checked})}
         />}
         label="階層表示"
       />

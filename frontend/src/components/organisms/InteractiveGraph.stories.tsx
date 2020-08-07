@@ -1,25 +1,16 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { select, boolean, number, date } from "@storybook/addon-knobs";
 
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Button,
   CssBaseline,
   Paper,
-  Typography,
 } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from "@material-ui/styles"
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import theme from 'styles/theme'
 import GraphView, {
-  optionCaption, optionCommunity, optionOrder
 } from 'components/molecules/GraphView'
-import GraphKnob from 'components/molecules/GraphKnob'
 import { GraphConfig } from 'components/molecules/GraphView'
 
 
