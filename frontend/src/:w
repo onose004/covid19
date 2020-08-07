@@ -1,0 +1,130 @@
+import React from 'react';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+  Divider,
+  Grid,
+  Typography,
+} from '@material-ui/core';  
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+  DatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import jaLocale from "date-fns/locale/ja";
+import { makeStyles } from '@material-ui/core/styles';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+import { GraphConfig } from 'components/molecules/GraphView'
+
+const useStyles = makeStyles((theme) => ({
+  accordionDetails: {
+    display: "block",
+    flexGrow: 1,
+  },
+}))
+
+type GraphKnobProps = {
+  config: GraphConfig,
+  setHierarchical: void,
+  setCaption: void,
+  setCommunity: void,
+  setStartDate: void,
+  setEndDate: void,
+  setOrder: void,
+  setMaxNodes: void,
+}
+
+const GraphKnob: React.FC = (props) => {
+  const classes = useStyles()
+  const formatDate = (timestamp) => {
+    var d = new Date(timestamp)
+    var year = d.getFullYear()
+    var month = d.getMonth() + 1
+    var date = d.getDate()
+    return(`${year}年${month}月${date}日`)
+  }
+  return(
+    <React.Fragment>
+      <Accordion
+        square={false}
+        defaultExpanded
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <Typography>
+            {formatDate(props.config.startDate)}
+            &nbsp;-&nbsp;
+            {formatDate(props.config.endDate)}
+            の期間で
+            <br />
+            {
+              (props.config.order === "asc")
+              ? "新しい"
+              : (props.config.order === "desc")
+                ? "古い"
+                : ""
+            }
+            順に最大
+            {props.config.maxNodes}
+            件を表示中
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails className={classes.accordionDetails}>
+          <Typography>
+            表示期間
+          </Typography>
+          <MuiPickersUtilsProvider
+            utils={DateFnsUtils}
+            local={jaLocale}
+          >
+            <Grid spacing={1} container fluid>
+              <Grid item>
+                <DatePicker
+                  margin="normal"
+                  id="startDatePicker"
+                  label="開始日"
+                  format="yyyy-MM-dd"
+                  disableFuture
+                  value={props.config.startDate}
+                  maxDate={(props.config.endDate)}
+                  onChange={(date) => props.setStartDate(date)}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                  variant="contained"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <DatePicker
+                  margin="normal"
+                  id="endDatePicker"
+                  label="終了日"
+                  format="yyyy-MM-dd"
+                  disableFuture
+                  value={props.config.endDate}
+                  minDate={(props.config.startDate)}
+                  onChange={(date) => props.setEndDate(date)}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </MuiPickersUtilsProvider>
+          <Divider />
+          aaa
+        </AccordionDetails>
+      </Accordion>
+    </React.Fragment>
+  )
+}
+
+export default GraphKnob

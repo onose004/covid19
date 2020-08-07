@@ -2,15 +2,13 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { ThemeProvider } from "@material-ui/styles"
-import {
-  withKnobs, select, boolean, number, date
-} from "@storybook/addon-knobs";
 
 import theme from 'styles/theme'
 import GraphKnob from 'components/molecules/GraphKnob'
+import { GraphConfig } from 'components/molecules/GraphView'
 
 const Example: React.FC = (props) => {
-  const [config, setConfig] = React.useState({
+  const [config, setConfig] = React.useState<GraphConfig | undefined>({
     hierarchical: false,
     caption: 'date_label',
     community: '_enum_sex',
@@ -18,25 +16,28 @@ const Example: React.FC = (props) => {
     endDate: new Date('July 30 2020'),
     order: "desc",
     maxNodes: 64,
+    minDescendant: 4,
   })
   return(
     <>
-    <GraphKnob 
-      config={config}
-      setHierarchical={(h: bool) => setConfig({...config, hierarchical: h})}
-      setCaption={(value: string) => setConfig({...config, caption: value})}
-      setCommunity={(label: string) => setConfig({...config, community: label})}
-      setStartDate={(date) => setConfig({...config, startDate: date})}
-      setEndDate={(date) => setConfig({...config, endDate: date})}
-      setOrder={(order: string) => setConfig({...config, order: order})}
-      setMaxNodes={(n: number) => setConfig({...config, maxNodes: n})}
-    />
-      </>
+      { config &&
+        <GraphKnob 
+          config={config}
+          setHierarchical={(h: boolean) => setConfig({...config, hierarchical: h})}
+          setCaption={(value: GraphConfig["caption"]) => setConfig({...config, caption: value})}
+          setCommunity={(label: GraphConfig["community"]) => setConfig({...config, community: label})}
+          setStartDate={(date: Date) => setConfig({...config, startDate: date})}
+          setEndDate={(date: Date) => setConfig({...config, endDate: date})}
+          setOrder={(order: GraphConfig["order"]) => setConfig({...config, order: order})}
+          setMaxNodes={(n: number) => setConfig({...config, maxNodes: n})}
+          setMinDescendant={(n: number) => setConfig({...config, minDescendant: n})}
+        />
+      }
+    </>
   )
 }
 
 storiesOf('Molecules/GraphKnob', module)
-  .addDecorator(withKnobs)
   .add('default', () =>
     <ThemeProvider theme={theme}>
       <Example />

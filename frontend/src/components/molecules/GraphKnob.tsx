@@ -24,7 +24,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from "date-fns/locale/ja";
 import { makeStyles } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandLess';
 
 import { GraphConfig } from 'components/molecules/GraphView'
 import {
@@ -32,173 +32,138 @@ import {
 } from 'components/molecules/GraphView'
 
 const useStyles = makeStyles((theme) => ({
-  accordionDetails: {
+  root: {
     display: "block",
-    flexGrow: 1,
-    maxWidth: theme.spacing(64),
   },
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 88,
+    display: "block",
+    margin: theme.spacing(0, 0, 2, 0),
+    minWidth: 120,
   }
 }))
 
 type GraphKnobProps = {
   config: GraphConfig,
-  setHierarchical: void,
-  setCaption: void,
-  setCommunity: void,
-  setStartDate: void,
-  setEndDate: void,
-  setOrder: void,
-  setMaxNodes: void,
+  setHierarchical: Function,
+  setCaption: Function,
+  setCommunity: Function,
+  setStartDate: Function,
+  setEndDate: Function,
+  setOrder: Function,
+  setMaxNodes: Function,
+  setMinDescendant: Function,
 }
 
-const GraphKnob: React.FC = (props) => {
+const GraphKnob: React.FC<GraphKnobProps> = (props) => {
   const classes = useStyles()
-  const formatDate = (timestamp) => {
-    var d = new Date(timestamp)
-    var year = d.getFullYear()
-    var month = d.getMonth() + 1
-    var date = d.getDate()
-    return(`${year}年${month}月${date}日`)
-  }
   return(
-    <React.Fragment>
-      <Accordion
-        square={false}
-        defaultExpanded
+    <div className={classes.root}>
+      <MuiPickersUtilsProvider
+        utils={DateFnsUtils}
       >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+            <DatePicker
+              className={classes.formControl}
+              margin="normal"
+              id="startDatePicker"
+              label="開始日"
+              format="yyyy-MM-dd"
+              disableFuture
+              value={props.config.startDate}
+              maxDate={(props.config.endDate)}
+              onChange={(date) => props.setStartDate(date)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <DatePicker
+              className={classes.formControl}
+              margin="normal"
+              id="endDatePicker"
+              label="終了日"
+              format="yyyy-MM-dd"
+              disableFuture
+              value={props.config.endDate}
+              minDate={(props.config.startDate)}
+              onChange={(date) => props.setEndDate(date)}
+            />
+      </MuiPickersUtilsProvider>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="labelCaption">ラベル</InputLabel>
+        <Select
+          labelId="labelCaption"
+          value={props.config.caption}
+          onChange={(e) => props.setCaption(e.target.value)}
         >
-          <Typography>
-            {formatDate(props.config.startDate)}
-            &nbsp;-&nbsp;
-            {formatDate(props.config.endDate)}
-            の期間で
-            <br />
-            {
-              (props.config.order === "asc")
-              ? "古い"
-              : (props.config.order === "desc")
-                ? "新しい"
-                : ""
-            }
-            順に最大
-            {props.config.maxNodes}
-            件を表示中
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionDetails}>
-          <MuiPickersUtilsProvider
-            utils={DateFnsUtils}
-            local={jaLocale}
-          >
-            <Grid spacing={1} container fluid>
-              <Grid item>
-                <DatePicker
-                  className={classes.formControl}
-                  margin="normal"
-                  id="startDatePicker"
-                  label="開始日"
-                  format="yyyy-MM-dd"
-                  disableFuture
-                  value={props.config.startDate}
-                  maxDate={(props.config.endDate)}
-                  onChange={(date) => props.setStartDate(date)}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                  variant="contained"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid>
-              <Grid item>
-                <DatePicker
-                  className={classes.formControl}
-                  margin="normal"
-                  id="endDatePicker"
-                  label="終了日"
-                  format="yyyy-MM-dd"
-                  disableFuture
-                  value={props.config.endDate}
-                  minDate={(props.config.startDate)}
-                  onChange={(date) => props.setEndDate(date)}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </MuiPickersUtilsProvider>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="labelCaption">ラベル</InputLabel>
-            <Select
-              labelId="labelCaption"
-              value={props.config.caption}
-              onChange={(e) => props.setCaption(e.target.value)}
-            >
-              {Object.keys(optionCaption).map((v, k) => 
-                <MenuItem value={optionCaption[v]}>
-                  {v}
-                </MenuItem>
-              )}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="labelCommunity">色分け</InputLabel>
-            <Select
-              labelId="labelCommunity"
-              value={props.config.community}
-              onChange={(e) => props.setCommunity(e.target.value)}
-            >
-              {Object.keys(optionCommunity).map((v, k) => 
-                <MenuItem value={optionCommunity[v]}>
-                  {v}
-                </MenuItem>
-              )}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="labelOrder">表示順</InputLabel>
-            <Select
-              labelId="labelOrder"
-              value={props.config.order}
-              onChange={(e) => props.setOrder(e.target.value)}
-            >
-              {Object.keys(optionOrder).map((v, k) => 
-                <MenuItem value={optionOrder[v]}>
-                  {v}
-                </MenuItem>
-              )}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="labelMaxNodes">最大表示数</InputLabel>
-            <Select
-              labelId="labelMaxNodes"
-              value={props.config.maxNodes}
-              onChange={(e) => props.setMaxNodes(e.target.value)}
-            >
-              {[16, 64, 128, 256, 512, 1024].map((v, k) => 
-                <MenuItem value={v}>
-                  {v}
-                </MenuItem>
-              )}
-            </Select>
-          </FormControl>
-          <FormControlLabel
-            control={<Switch checked={props.config.hierarchical}
-              onChange={(h) => props.setHierarchical(h.target.checked)}
-            />}
-            label="階層表示"
-          />
-    </AccordionDetails>
-      </Accordion>
-    </React.Fragment>
+          {Object.keys(optionCaption).map((v, k) => 
+            <MenuItem value={(optionCaption[v])}>
+              {v}
+            </MenuItem>
+          )}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="labelCommunity">色分け</InputLabel>
+        <Select
+          labelId="labelCommunity"
+          value={props.config.community}
+          onChange={(e) => props.setCommunity(e.target.value)}
+        >
+          {Object.keys(optionCommunity).map((v, k) => 
+            <MenuItem value={optionCommunity[v]}>
+              {v}
+            </MenuItem>
+          )}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="labelOrder">表示順</InputLabel>
+        <Select
+          labelId="labelOrder"
+          value={props.config.order}
+          onChange={(e) => props.setOrder(e.target.value)}
+        >
+          {Object.keys(optionOrder).map((v, k) => 
+            <MenuItem value={optionOrder[v]}>
+              {v}
+            </MenuItem>
+          )}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="labelMaxNodes">最大表示数</InputLabel>
+        <Select
+          labelId="labelMaxNodes"
+          value={props.config.maxNodes}
+          onChange={(e) => props.setMaxNodes(e.target.value)}
+        >
+          {[16, 64, 128, 256, 512, 1024].map((v, k) => 
+            <MenuItem value={v}>
+              {v}
+            </MenuItem>
+          )}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="labelMinDescendant">クラスター規模</InputLabel>
+        <Select
+          labelId="labelMinDescendant"
+          value={props.config.minDescendant}
+          onChange={(e) => props.setMinDescendant(e.target.value)}
+        >
+          {[2, 4, 8, 16, 32, 64].map((v, k) => 
+            <MenuItem value={v}>
+              {v}人以上
+            </MenuItem>
+          )}
+        </Select>
+      </FormControl>
+      <FormControlLabel
+        control={<Switch checked={props.config.hierarchical}
+          onChange={(h) => props.setHierarchical(h.target.checked)}
+        />}
+        label="階層表示"
+      />
+      </div>
   )
 }
 

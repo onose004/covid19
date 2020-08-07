@@ -30,10 +30,11 @@ storiesOf('Molecules/GraphView', module)
             "年代": "_enum_age",
             "国籍": "_enum_nationality",
           }, '_enum_sex'),
-          startDate: date('startDate', new Date('July 1 2020')),
-          endDate: date('endDate', new Date('July 30 2020')),
+          startDate: new Date(date('startDate', new Date('July 1 2020'))),
+          endDate: new Date(date('endDate', new Date('July 30 2020'))),
           order: select("order", {"古い順": "asc", "新しい順": "desc"}, "asc"),
           maxNodes: number('maxNodes', 16),
+          minDescendant: number('minDescendant', 16),
         }}
       />
     </div>

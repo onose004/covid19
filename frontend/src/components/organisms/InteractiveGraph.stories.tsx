@@ -21,6 +21,7 @@ import GraphView, {
 } from 'components/molecules/GraphView'
 import GraphKnob from 'components/molecules/GraphKnob'
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
   },
@@ -48,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   paper: {
-    top: theme.spacing(0),
-    left: theme.spacing(0),
+    bottom: theme.spacing(0),
+    right: theme.spacing(0),
     margin: theme.spacing(1),
     position: "absolute",
     zIndex: 1,
@@ -66,6 +67,7 @@ const Example: React.FC = (props) => {
     endDate: new Date(),
     order: "desc",
     maxNodes: 64,
+    minDescendant: 4,
   })
   return(
     <div className={classes.root}>
@@ -75,6 +77,7 @@ const Example: React.FC = (props) => {
           className={classes.paper}
           elevation={3}
         >
+          {/*
           <GraphKnob
             config={config}
             setHierarchical={(h: bool) => setConfig({...config, hierarchical: h})}
@@ -84,7 +87,9 @@ const Example: React.FC = (props) => {
             setEndDate={(date) => setConfig({...config, endDate: date})}
             setOrder={(order: string) => setConfig({...config, order: order})}
             setMaxNodes={(n: number) => setConfig({...config, maxNodes: n})}
+            setMinDescendant={(n: number) => setConfig({...config, minDescendant: n})}
           />
+            */}
         </Paper>
         <div>
       <GraphView
