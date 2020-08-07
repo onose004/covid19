@@ -46,7 +46,7 @@ const Tool: React.FC = (props) => {
     startDate: new Date('July 1 2020'),
     endDate: new Date(),
     order: "desc",
-    maxNodes: 64,
+    maxNodes: 256,
     minDescendant: 4,
   })
   return(

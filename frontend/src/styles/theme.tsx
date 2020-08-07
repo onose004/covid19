@@ -1,10 +1,14 @@
 import {
   createMuiTheme,
 } from '@material-ui/core';  
+import { pink, purple } from '@material-ui/core/colors';
+
 
 const theme = createMuiTheme({
   palette: {
-    type: "dark"
+    primary: pink,
+    secondary: purple,
+    type: "dark",
   }
 });
 

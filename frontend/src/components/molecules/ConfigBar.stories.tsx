@@ -14,7 +14,7 @@ storiesOf('Molecules/ConfigBar', module)
   .add('default', () =>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ConfigBar />
+      not available
     </ThemeProvider>
   )
 

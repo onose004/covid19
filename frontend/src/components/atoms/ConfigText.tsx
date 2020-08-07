@@ -19,7 +19,7 @@ const ConfigText: React.FC<ConfigTextProps> = (props) => {
       &nbsp;-&nbsp;
       {formatDate(props.config.endDate)}
       の期間で
-      <br />
+      {props.config.minDescendant} 人以上のクラスターを
       {
         (props.config.order === "asc")
           ? "古い"
@@ -29,7 +29,7 @@ const ConfigText: React.FC<ConfigTextProps> = (props) => {
       }
       順に最大
       {props.config.maxNodes}
-      件を表示中
+      件表示中
     </React.Fragment>
   )
 }

@@ -46,7 +46,7 @@ const Toolbar: React.FC<{classes?: object}> = (props) => {
         <MenuIcon />
       </IconButton>
       <Typography className={classes.title}>
-        Cluster Viz for 愛知県
+        Cluster Viz β for 愛知県
       </Typography>
       <Divider flexItem orientation='vertical' className={classes.divider}/>
       <IconButton className={classes.infoButton}>

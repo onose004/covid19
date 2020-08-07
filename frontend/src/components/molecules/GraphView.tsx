@@ -103,7 +103,7 @@ const GraphView: React.FC<GraphViewProps> = (props) => {
     // @ts-ignore
     const vis = new window.NeoVis.default(config)
     vis.render()
-  });
+  }, [props.config]);
 
   return(
     <div style={{width: "100%", height: "100vh", margin: "0"}}>

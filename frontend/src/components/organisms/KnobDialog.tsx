@@ -56,7 +56,7 @@ const KnobDialog: React.FC<KnobDialogProps> = (props) => {
           <Button onClick={() => props.setOpen(false)} color="primary">
             キャンセル
           </Button>
-          <Button onClick={handleSetConfig} color="primary">
+          <Button onClick={() => handleSetConfig()} color="primary">
             適用
           </Button>
         </DialogActions>
