@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-const Suggestions: React.FC = (props) => {
+const Suggestions: React.FC<{classes?: object}> = (props) => {
   const classes = useStyles(props)
   const [open, setOpen] = React.useState(false)
   return(

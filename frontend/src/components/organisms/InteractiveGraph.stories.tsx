@@ -20,6 +20,7 @@ import GraphView, {
   optionCaption, optionCommunity, optionOrder
 } from 'components/molecules/GraphView'
 import GraphKnob from 'components/molecules/GraphKnob'
+import { GraphConfig } from 'components/molecules/GraphView'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Example: React.FC = (props) => {
   const classes = useStyles()
-  const [config, setConfig] = React.useState({
+  const [config, setConfig] = React.useState<GraphConfig>({
     hierarchical: false,
     caption: 'sex',
     community: '_enum_sex',
@@ -79,7 +80,7 @@ const Example: React.FC = (props) => {
         >
           {/*
           <GraphKnob
-            config={config}
+            config={config: GraphConfig}
             setHierarchical={(h: bool) => setConfig({...config, hierarchical: h})}
             setCaption={(value: string) => setConfig({...config, caption: value})}
             setCommunity={(label: string) => setConfig({...config, community: label})}

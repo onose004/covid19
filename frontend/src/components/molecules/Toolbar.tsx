@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Toolbar: React.FC = (props) => {
+
+const Toolbar: React.FC<{classes?: object}> = (props) => {
   const classes = useStyles(props)
   return(
     <Paper className={classes.root}

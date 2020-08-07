@@ -100,7 +100,7 @@ class BaseCase():
             f'MERGE (c)-[:TESTED_AT]->(pc) \n'
             f'SET c.note={self.to_cypher(self.note)} \n'
             f'SET c.date=date("{self.date}") \n'
-            f'SET c.date_label="{self.date}" \n'
+            f'SET c.date_label="{datetime.datetime.strptime(self.date, "%Y-%m-%d").strftime("%m/%d")}" \n'
             )
         for pi in ["age", "pref", "nationality", "sex", "address"]:
             q += (

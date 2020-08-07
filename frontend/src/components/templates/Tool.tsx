@@ -21,6 +21,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import GraphKnob from 'components/molecules/GraphKnob'
 import Toolbar from 'components/molecules/Toolbar'
 import Suggestions from 'components/molecules/Suggestions'
+import { GraphConfig } from 'components/molecules/GraphView'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 const Tool: React.FC = (props) => {
   const classes = useStyles()
-  const [config, setConfig] = React.useState({
+  const [config, setConfig] = React.useState<GraphConfig>({
     hierarchical: false,
     caption: 'sex',
     community: '_enum_sex',
@@ -61,7 +62,7 @@ const Tool: React.FC = (props) => {
   return(
     <div className={classes.root}>
       <CssBaseline />
-      <main className={classes.content}>
+      <main>
         <div className={classes.toolbarWrapper}>
           <Toolbar
             classes={{
@@ -78,7 +79,6 @@ const Tool: React.FC = (props) => {
           />
         </div>
         <GraphView
-          className={classes.graphView}
           neo4jUri="bolt://localhost:7687"
           neo4jUser="neo4j"
           neo4jPassword="pass"
