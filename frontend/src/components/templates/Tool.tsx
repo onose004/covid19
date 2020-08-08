@@ -51,10 +51,33 @@ const Tool: React.FC = (props) => {
   const [graphConfig, setGraphConfig] = React.useState<gc.GraphConfig | undefined>(
     undefined 
   )
-  const handleSetGraphConfig = async (graphConfig: gc.GraphConfig) => {
-    await gc.setGraphConfig(graphConfig)
-    setGraphConfig(graphConfig)
-    await ga.trackGraphConfig(graphConfig)
+
+  const objDiff = (obj1: any, obj2: any) =>  {
+    const result: any = {};
+    if (Object.is(obj1, obj2)) {
+      return undefined;
+    }
+    if (!obj2 || typeof obj2 !== 'object') {
+      return obj2;
+    }
+    Object.keys(obj1 || {}).concat(Object.keys(obj2 || {})).forEach(key => {
+      if(obj2[key] !== obj1[key] && !Object.is(obj1[key], obj2[key])) {
+        result[key] = obj2[key];
+      }
+      if(typeof obj2[key] === 'object' && typeof obj1[key] === 'object') {
+        const value = objDiff(obj1[key], obj2[key]);
+        if (value !== undefined) {
+          result[key] = value;
+        }
+      }
+    });
+    return result;
+  }
+  const handleSetGraphConfig = async (newGraphConfig: gc.GraphConfig) => {
+    const graphConfigDiff = (objDiff(graphConfig, newGraphConfig))
+    await gc.setGraphConfig(newGraphConfig)
+    await setGraphConfig(newGraphConfig)
+    await ga.trackGraphConfigDiff(graphConfigDiff)
   }
   React.useEffect(() => {
     const f = async () => {
