@@ -1,11 +1,20 @@
-import * as gc from 'api/config'
 import ReactGA from 'react-ga';
+import * as H from 'history'
 
 const GA_TRACKING_ID = 'UA-000000-01'
 
-ReactGA.initialize(GA_TRACKING_ID, {
-  debug: true
-})
+export const bindHistoryListen = async (history: H.History) => {
+  await ReactGA.initialize(GA_TRACKING_ID, {
+    debug: true
+  })
+  await ReactGA.set({ page: history.location.pathname })
+  await ReactGA.pageview("send")
+
+  history.listen(async (location: any) => {
+    await ReactGA.set({ page: location.pathname + location.search })
+    await ReactGA.pageview("send")
+  });
+}
 
 interface StringKeyObject {
   [key: string]: string;
@@ -19,9 +28,9 @@ export const trackGraphConfigDiff = (graphConfigDiff: StringKeyObject): Promise<
         reject()
       }
       if(agreeUsageTrack === "agree"){
-        Object.keys(graphConfigDiff).forEach(key => {
+        Object.keys(graphConfigDiff).forEach(async (key) => {
           const label = `${key}:${graphConfigDiff[key]}`
-          ReactGA.event({
+          await ReactGA.event({
             category: 'GraphConfig',
             action: 'set',
             label: label,
@@ -34,5 +43,3 @@ export const trackGraphConfigDiff = (graphConfigDiff: StringKeyObject): Promise<
     }
   })
 }
-
-export default trackGraphConfigDiff 

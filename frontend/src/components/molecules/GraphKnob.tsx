@@ -145,9 +145,11 @@ const GraphKnob: React.FC<GraphKnobProps> = (props) => {
         </Select>
       </FormControl>
       <FormControlLabel
-        control={<Switch checked={props.config.hierarchical}
-          onChange={(e) => props.setConfig({...props.config, hierarchical: e.target.checked})}
-        />}
+        control={
+          <Switch color="primary" checked={props.config.hierarchical}
+            onChange={(e) => props.setConfig({...props.config, hierarchical: e.target.checked})}
+          />
+        }
         label="階層表示"
       />
       </div>

@@ -13,6 +13,7 @@ import {
   Select,
   Switch,
 } from '@material-ui/core';  
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { makeStyles } from '@material-ui/core/styles';
 import * as neo4j from 'api/neo4j'
 import * as ga from 'api/ga'
@@ -78,7 +79,11 @@ const EntryDialog: React.FC<EntryDialogProps> = (props) => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => handleEntry()} variant="contained" color="primary">
+            <Button
+              endIcon={
+                <ChevronRightIcon />
+              }
+              onClick={() => handleEntry()} variant="contained" color="primary">
               続ける
             </Button>
           </DialogActions>

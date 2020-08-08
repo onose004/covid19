@@ -1,13 +1,18 @@
 import React from 'react';
 
 import {
+  useHistory,
+} from 'react-router-dom';
+
+import {
   Divider,
   IconButton,
   Paper,
   Typography,
 } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
+// import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HelpIcon from '@material-ui/icons/Help';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,12 +43,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Toolbar: React.FC<{classes?: object}> = (props) => {
   const classes = useStyles(props)
+  const history = useHistory()
   return(
     <Paper className={classes.root}
       elevation={3}
     >
-      <IconButton className={classes.menuButton}>
-        <MenuIcon />
+      <IconButton
+        className={classes.menuButton}
+        onClick={() => history.push('/')}
+      >
+        <ChevronLeftIcon />
       </IconButton>
       <Typography className={classes.title}>
         Cluster Viz β for 愛知県

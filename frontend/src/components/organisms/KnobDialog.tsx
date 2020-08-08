@@ -7,6 +7,7 @@ import {
   DialogActions,
 
 } from '@material-ui/core';  
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { makeStyles } from '@material-ui/core/styles';
 
 import GraphKnob from 'components/molecules/GraphKnob'
@@ -56,7 +57,12 @@ const KnobDialog: React.FC<KnobDialogProps> = (props) => {
           <Button onClick={() => props.setOpen(false)} color="primary">
             キャンセル
           </Button>
-          <Button onClick={() => handleSetConfig()} color="primary">
+          <Button onClick={() => handleSetConfig()} color="primary"
+            variant="contained"
+            endIcon={
+              <ChevronRightIcon />
+            }
+          >
             適用
           </Button>
         </DialogActions>

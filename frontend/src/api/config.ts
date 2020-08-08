@@ -16,7 +16,7 @@ export const defaultGraphConfig: GraphConfig = {
   startDate: new Date('July 1 2020'),
   endDate: new Date(),
   order: "desc",
-  maxNodes: 256,
+  maxNodes: 512,
   minDescendant: 4,
 }
 
