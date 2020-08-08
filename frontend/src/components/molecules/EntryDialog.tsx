@@ -1,28 +1,20 @@
 import React from 'react';
 import {
-  AppBar,
   Button,
-  Divider,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Link,
   Typography,
-  Toolbar as MuiToolbar,
   FormControl,
-  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
-  Switch,
-  CssBaseline,
 } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
-import * as api from 'api/neo4j'
-import * as survey from 'api/survey'
-
-
+import * as neo4j from 'api/neo4j'
+import * as userApi from 'api/user'
+import * as ga from 'api/ga'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -39,22 +31,23 @@ type EntryDialogProps = {
 const EntryDialog: React.FC<EntryDialogProps> = (props) => {
   const classes = useStyles(props.classes)
   const [step, setStep] = React.useState<"welcome" | "survey">("welcome")
-  const [dataSource, setDataSource] = React.useState<api.DataSource | undefined>(undefined)
+  const [dataSource, setDataSource] = React.useState<neo4j.DataSource | undefined>(undefined)
 
-  const [surveyResponse, setSurveyResponse] = React.useState<survey.SurveyResponse>(
-    {sex: "na", age: "na"}
+  const [user, setUser] = React.useState<userApi.User>(
+    userApi.defaultUser
   )
 
   const handleEntry = async () => {
-    await survey.setSurveyResponse(surveyResponse)
+    await userApi.setUser(user)
     props.setOpen(false)
   }
 
 
   React.useEffect(() => {
     const f = async () => {
-      const res = await survey.getSurveyResponse()
+      const res = await userApi.getUser()
       if(res){
+        ga.trackUser(res)
         props.setOpen(false)
       }
     }
@@ -100,15 +93,15 @@ const EntryDialog: React.FC<EntryDialogProps> = (props) => {
                   <InputLabel id="labelAge">年齢</InputLabel>
                   <Select
                     labelId="labelAge"
-                    value={surveyResponse.age}
+                    value={user.age}
                     onChange={(e) => {
                       if(typeof(e.target.value) === "string"){
-                        setSurveyResponse({...surveyResponse, age: e.target.value})
+                        setUser({...user, age: e.target.value})
                       }
                     }}
                   >
-                    {Object.keys(survey.optionAge).map((v, k) => 
-                    <MenuItem value={survey.optionAge[v]}>
+                    {Object.keys(userApi.optionAge).map((v, k) => 
+                    <MenuItem value={userApi.optionAge[v]}>
                       {v}
                     </MenuItem>
                     )}
@@ -120,13 +113,13 @@ const EntryDialog: React.FC<EntryDialogProps> = (props) => {
                     labelId="labelSex"
                     onChange={(e) => {
                       if(typeof(e.target.value) === "string"){
-                        setSurveyResponse({...surveyResponse, sex: e.target.value})
+                        setUser({...user, sex: e.target.value})
                       }
                     }}
-                    value={surveyResponse.sex}
+                    value={user.sex}
                   >
-                    {Object.keys(survey.optionSex).map((v, k) => 
-                    <MenuItem value={survey.optionSex[v]}>
+                    {Object.keys(userApi.optionSex).map((v, k) => 
+                    <MenuItem value={userApi.optionSex[v]}>
                       {v}
                     </MenuItem>
                     )}

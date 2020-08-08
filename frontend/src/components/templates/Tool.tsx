@@ -11,10 +11,9 @@ import Toolbar from 'components/molecules/Toolbar'
 import ConfigBar from 'components/molecules/ConfigBar'
 import FooterBar from 'components/molecules/FooterBar'
 import KnobDialog from 'components/organisms/KnobDialog'
-import Suggestions from 'components/molecules/Suggestions'
 import EntryDialog from 'components/molecules/EntryDialog'
-import * as api from 'api/neo4j'
-import * as config from 'api/config'
+import * as gc from 'api/config'
+import * as ga from 'api/ga'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,17 +48,19 @@ const Tool: React.FC = (props) => {
   const classes = useStyles()
   const [knobOpen, setKnobOpen] = React.useState(false)
   const [entryOpen, setEntryOpen] = React.useState(true)
-  const [graphConfig, setGraphConfig] = React.useState<config.GraphConfig>(
-    config.defaultGraphConfig
+  const [graphConfig, setGraphConfig] = React.useState<gc.GraphConfig | undefined>(
+    undefined 
   )
-  const handleSetGraphConfig = async (graphConfig: config.GraphConfig) => {
-    await config.setGraphConfig(graphConfig)
+  const handleSetGraphConfig = async (graphConfig: gc.GraphConfig) => {
+    await gc.setGraphConfig(graphConfig)
     setGraphConfig(graphConfig)
+    await ga.trackGraphConfig(graphConfig)
   }
   React.useEffect(() => {
     const f = async () => {
-      const conf = await config.getGraphConfig()
-      setGraphConfig(conf)
+      const conf = await gc.getGraphConfig().then(
+        (conf: gc.GraphConfig) => setGraphConfig(conf)
+      )
     }
     f()
   }, [])

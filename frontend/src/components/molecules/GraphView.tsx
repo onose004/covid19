@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import * as api from 'api/neo4j'
-import * as config from 'api/config'
+import * as gc from 'api/config'
 
 type GraphViewProps = {
-  config: config.GraphConfig
+  config: gc.GraphConfig | undefined
 }
 
 interface StringKeyObject {
@@ -46,50 +46,52 @@ const GraphView: React.FC<GraphViewProps> = (props) => {
   }
 
   useEffect(() => {
-    const startDate = formatDate(props.config.startDate)
-    const endDate = formatDate(props.config.endDate)
-    var q = `MATCH (c:Case) MATCH (c)-[e:CONTACTED*1..]->(r:Case) `
-    q += `WHERE c.date > date('${startDate}') AND c.date < date('${endDate}') `
-    q += `AND c.n_descendant > ${props.config.minDescendant} `
-    q += `RETURN * ORDER BY c.date ${props.config.order} LIMIT ${props.config.maxNodes} `
-    const config = {
-      container_id: "viz",
-      server_url: api.NEO4J_URI,
-      server_user: api.NEO4J_USER,
-      server_password: api.NEO4J_PASS,
-      hierarchical: props.config.hierarchical,
-      hierarchical_sort_method: "directed",
-      arrows: true,
-      labels: {
-        "Case": {
-          "caption": props.config.caption,
-          "community": props.config.community,
-          "size": "n_child",
+    if(props.config){
+      const startDate = formatDate(props.config.startDate)
+      const endDate = formatDate(props.config.endDate)
+      var q = `MATCH (c:Case) MATCH (c)-[e:CONTACTED*1..]->(r:Case) `
+      q += `WHERE c.date > date('${startDate}') AND c.date < date('${endDate}') `
+      q += `AND c.n_descendant > ${props.config.minDescendant} `
+      q += `RETURN * ORDER BY c.date ${props.config.order} LIMIT ${props.config.maxNodes} `
+      const config = {
+        container_id: "viz",
+        server_url: api.NEO4J_URI,
+        server_user: api.NEO4J_USER,
+        server_password: api.NEO4J_PASS,
+        hierarchical: props.config.hierarchical,
+        hierarchical_sort_method: "directed",
+        arrows: true,
+        labels: {
+          "Case": {
+            "caption": props.config.caption,
+            "community": props.config.community,
+            "size": "n_child",
 
-          "title_properties": [
-            "tag",
-            "date",
-            "sex",
-            "address",
-            "pref",
-            "age",
-            "note",
-            "nationality",
-          ]
-        }
-      },
-      relationships: {
-        "CONTACTED": {
-          "thickness": "weight",
-          "caption": false 
-        }
-      },
-      initial_cypher: q,
-      console_debug: false,
-    };
-    // @ts-ignore
-    const vis = new window.NeoVis.default(config)
-    vis.render()
+            "title_properties": [
+              "tag",
+              "date",
+              "sex",
+              "address",
+              "pref",
+              "age",
+              "note",
+              "nationality",
+            ]
+          }
+        },
+        relationships: {
+          "CONTACTED": {
+            "thickness": "weight",
+            "caption": false 
+          }
+        },
+        initial_cypher: q,
+        console_debug: false,
+      };
+      // @ts-ignore
+      const vis = new window.NeoVis.default(config)
+      vis.render()
+    }
   }, [props.config]);
 
   return(
