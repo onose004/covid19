@@ -24,6 +24,14 @@ class Aichi(BaseDataloader):
     def pref_id(self):
         return "aichi"
 
+    @property
+    def data_source_uri(self):
+        return "http://linkdata.org/work/rdf1s8260i"
+
+    @property
+    def data_source_title(self):
+        return "LinkData"
+
     def fetch(self):
         url = "http://linkdata.org/api/1/rdf1s8260i/Infected_document_aichi.csv"
         if self.csv_exists():

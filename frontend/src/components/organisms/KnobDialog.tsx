@@ -10,7 +10,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 
 import GraphKnob from 'components/molecules/GraphKnob'
-import { GraphConfig } from 'components/molecules/GraphView'
+import * as config from 'api/config'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
 type KnobDialogProps = {
   open: boolean,
   setOpen: Function,
-  config: GraphConfig,
+  config: config.GraphConfig,
   setConfig: Function,
 }
 
 const KnobDialog: React.FC<KnobDialogProps> = (props) => {
   const classes = useStyles()
-  const [config, setConfig] = React.useState<GraphConfig | undefined>(undefined)
+  const [config, setConfig] = React.useState<config.GraphConfig | undefined>(undefined)
   React.useEffect(() => {
     setConfig(props.config)
   }, [props.config])

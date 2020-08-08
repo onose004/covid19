@@ -11,9 +11,6 @@ storiesOf('Molecules/GraphView', module)
   .add('default', () =>
     <div>
       <GraphView
-        neo4jUri="bolt://localhost:7687"
-        neo4jUser="neo4j"
-        neo4jPassword="pass"
         config={{
           hierarchical: boolean("Hierarchical", false),
           caption: select("caption", {

@@ -29,9 +29,28 @@ class BaseDataloader(object):
             self.df = pd.read_csv(self.csv_path)
         return self.df
 
+    def get_data_source_query(self):
+        q = (
+            f'MERGE (d: DataSource {{pref_id: "{self.pref_id}"}}) \n'
+            f'SET d.uri="{self.data_source_uri}", \n'
+            f'd.title="{self.data_source_title}", \n'
+            f'd.last_update=date("{datetime.datetime.now().strftime("%Y-%m-%d")}") \n'
+            )
+        return q
+
     @property
     @abstractmethod
     def pref_id(self):
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def data_source_uri(self):
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def data_source_title(self):
         raise NotImplementedError()
 
     @property
@@ -92,6 +111,7 @@ class BaseCase():
         if literal is False:
             return '"いいえ"'
         return f'"{literal}"'
+
 
     def get_node_query(self):
         q = (

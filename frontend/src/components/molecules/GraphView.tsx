@@ -1,21 +1,9 @@
 import React, { useEffect } from 'react';
+import * as api from 'api/neo4j'
+import * as config from 'api/config'
 
 type GraphViewProps = {
-  neo4jUri: string,
-  neo4jUser: string,
-  neo4jPassword: string,
-  config: GraphConfig
-}
-
-export type GraphConfig = {
-  hierarchical: boolean,
-  caption: "tag" | "date_label" | "sex" | "address" | "age" | "nationality" | "none",
-  community: "_enum_address" | "_enum_sex" | "_enum_age" | "_enum_nationality",
-  maxNodes: number,
-  startDate: Date,
-  endDate: Date,
-  order: "asc" | "desc",
-  minDescendant: number,
+  config: config.GraphConfig
 }
 
 interface StringKeyObject {
@@ -56,20 +44,19 @@ const GraphView: React.FC<GraphViewProps> = (props) => {
 
     return [year, month, day].join('-');
   }
-  const startDate = formatDate(props.config.startDate)
-  const endDate = formatDate(props.config.endDate)
-
-  var q = `MATCH (c:Case) MATCH (c)-[e:CONTACTED*1..]->(r:Case) `
-  q += `WHERE c.date > date('${startDate}') AND c.date < date('${endDate}') `
-  q += `AND c.n_descendant > ${props.config.minDescendant} `
-  q += `RETURN * ORDER BY c.date ${props.config.order} LIMIT ${props.config.maxNodes} `
 
   useEffect(() => {
+    const startDate = formatDate(props.config.startDate)
+    const endDate = formatDate(props.config.endDate)
+    var q = `MATCH (c:Case) MATCH (c)-[e:CONTACTED*1..]->(r:Case) `
+    q += `WHERE c.date > date('${startDate}') AND c.date < date('${endDate}') `
+    q += `AND c.n_descendant > ${props.config.minDescendant} `
+    q += `RETURN * ORDER BY c.date ${props.config.order} LIMIT ${props.config.maxNodes} `
     const config = {
       container_id: "viz",
-      server_url: props.neo4jUri,
-      server_user: props.neo4jUser,
-      server_password: props.neo4jPassword,
+      server_url: api.NEO4J_URI,
+      server_user: api.NEO4J_USER,
+      server_password: api.NEO4J_PASS,
       hierarchical: props.config.hierarchical,
       hierarchical_sort_method: "directed",
       arrows: true,

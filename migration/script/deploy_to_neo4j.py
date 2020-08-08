@@ -38,6 +38,7 @@ if __name__ == '__main__':
 
         for pref_id in dataloader.keys():
             dl = dataloader[pref_id]
+            gdb.query(dl.get_data_source_query())
             for di in tqdm(range(len(dl)), desc=pref_id):
                 q = (dl[di].get_node_query())
                 gdb.query(q)

@@ -8,10 +8,10 @@ import {
 
 import theme from 'styles/theme'
 import GraphKnob from 'components/molecules/GraphKnob'
-import { GraphConfig } from 'components/molecules/GraphView'
+import * as config from 'api/config'
 
 const Example: React.FC = (props) => {
-  const [config, setConfig] = React.useState<GraphConfig | undefined>({
+  const [config, setConfig] = React.useState<config.GraphConfig | undefined>({
     hierarchical: false,
     caption: 'date_label',
     community: '_enum_sex',

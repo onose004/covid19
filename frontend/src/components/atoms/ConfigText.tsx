@@ -1,8 +1,8 @@
 import React from 'react';
-import { GraphConfig } from 'components/molecules/GraphView'
+import * as config from 'api/config'
 
 type ConfigTextProps = {
-  config: GraphConfig
+  config: config.GraphConfig
 }
 
 const ConfigText: React.FC<ConfigTextProps> = (props) => {

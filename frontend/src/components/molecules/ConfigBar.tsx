@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { GraphConfig } from 'components/molecules/GraphView'
 import ConfigText from 'components/atoms/ConfigText'
+import * as config from 'api/config'
 
 const useStyles = makeStyles((theme) => ({
   statusBar: {
@@ -33,38 +33,32 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     margin: theme.spacing(-1),
   },
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-  },
 }))
 
 
 type ConfigBarProps = {
   classes?: object,
-  config: GraphConfig | undefined,
+  config: config.GraphConfig | undefined,
   setConfigOpen: Function,
 }
 
 const ConfigBar: React.FC<ConfigBarProps> = (props) => {
   const classes = useStyles(props)
   return(
-    <AppBar position="fixed" className={classes.appBar} color="default">
-      <Toolbar variant="dense">
-        <Typography variant="caption" className={classes.statusBar}>
-          {props.config && 
-            <ConfigText config={props.config} />
-          }
-        </Typography>
-        <Divider flexItem orientation='vertical' className={classes.divider}/>
-        <IconButton
-          onClick={() => props.setConfigOpen(true)}
-          className={classes.settingButton} color="default"
-        >
-          <SettingsIcon />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+    <Toolbar variant="dense">
+      <Typography variant="caption" className={classes.statusBar}>
+        {props.config && 
+        <ConfigText config={props.config} />
+        }
+      </Typography>
+      <Divider flexItem orientation='vertical' className={classes.divider}/>
+      <IconButton
+        onClick={() => props.setConfigOpen(true)}
+        className={classes.settingButton} color="default"
+      >
+        <SettingsIcon />
+      </IconButton>
+    </Toolbar>
   )
 }
 

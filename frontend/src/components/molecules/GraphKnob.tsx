@@ -14,8 +14,8 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles } from '@material-ui/core/styles';
+import * as config from 'api/config'
 
-import { GraphConfig } from 'components/molecules/GraphView'
 import {
   optionCaption, optionCommunity, optionOrder
 } from 'components/molecules/GraphView'
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 type GraphKnobProps = {
-  config: GraphConfig | undefined,
+  config: config.GraphConfig | undefined,
   setConfig: Function,
 }
 
