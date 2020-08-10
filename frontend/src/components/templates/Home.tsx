@@ -4,47 +4,36 @@ import {
 } from 'react-router-dom';
 
 import {
-  Avatar,
-  AppBar,
   Button,
   Container,
   CssBaseline,
   Divider,
   Link,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Grid,
-  Paper,
   Toolbar,
   Typography,
 } from '@material-ui/core';  
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
 import { makeStyles } from '@material-ui/core/styles';
 
+import Hero from 'components/molecules/Hero'
+import Feature from 'components/molecules/Feature'
+import News from 'components/molecules/News'
+
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    minHeight: theme.spacing(32),
-    position: "relative",
+  toolbar: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  feature: {
     marginBottom: theme.spacing(4),
   },
-  content: {
-    position: "absolute",
-    top: theme.spacing(3),
-    left: theme.spacing(4),
-    [theme.breakpoints.down('xs')]: {
-      left: theme.spacing(2)
-    },
+  news: {
+    marginBottom: theme.spacing(4),
   },
-  title: {
-    margin: theme.spacing(0, 0, 1, 0),
-    fontSize: theme.typography.h4.fontSize,
-    [theme.breakpoints.down('xs')]: {
-      fontSize: theme.typography.h6.fontSize,
-    },
-  },
-
+  copyright: {
+    marginTop: theme.spacing(2),
+  }
 }))
 
 const Home: React.FC = (props) => {
@@ -53,53 +42,29 @@ const Home: React.FC = (props) => {
   return(
     <div>
       <CssBaseline />
-      <Container>
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Typography>
-            ClusterViz
+            ClusterViz 愛知県版
           </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => history.push('/tool')}
+            endIcon={
+              <ChevronRightIcon />
+            }
+          >
+            ClusterViz へ移動
+          </Button>
         </Toolbar>
+      <Container>
         <main>
-          <Paper elevation={0} className={classes.paper}>
-            <div className={classes.content}>
-              <Typography component="h1"
-                className={classes.title}
-              >
-                感染症発生事例の公開情報から
-                <br />
-                クラスターを見える化
-              </Typography>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={() => history.push('/tool')}
-                endIcon={
-                  <ChevronRightIcon />
-                }
-              >
-                ClusterViz
-              </Button>
-            </div>
-          </Paper>
-          <div>
-            <Typography component="h2" variant="h6">
-              更新情報
-            </Typography>
-            <List>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar alt="Travis Howard" />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="リリースしました"
-                  secondary=""
-                />
-              </ListItem>
-            </List>
-          </div>
+          <Hero />
+          <Feature classes={{paper: classes.feature}} />
+          <News classes={{root: classes.news}} />
         </main>
         <Divider />
-        <Typography component="h2" variant="caption">
+        <Typography component="h2" variant="caption" className={classes.copyright}>
           <Link href="https://www.hashup.pro" target="_blank" color="inherit">
             &copy; Hashup Inc.
           </Link>

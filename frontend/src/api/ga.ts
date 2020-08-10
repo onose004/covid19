@@ -1,11 +1,11 @@
 import ReactGA from 'react-ga';
 import * as H from 'history'
 
-const GA_TRACKING_ID = 'UA-000000-01'
+const GA_TRACKING_ID = 'UA-172646004-2'
 
 export const bindHistoryListen = async (history: H.History) => {
   await ReactGA.initialize(GA_TRACKING_ID, {
-    debug: true
+    debug: false 
   })
   await ReactGA.set({ page: history.location.pathname })
   await ReactGA.pageview("send")

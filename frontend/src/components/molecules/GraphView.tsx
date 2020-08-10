@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import {
+  CircularProgress,
+} from '@material-ui/core';  
 import * as api from 'api/neo4j'
 import * as gc from 'api/config'
 
@@ -45,7 +48,7 @@ const GraphView: React.FC<GraphViewProps> = (props) => {
     return [year, month, day].join('-');
   }
 
-  useEffect(() => {
+  const renderGraph = () => {
     if(props.config){
       const startDate = formatDate(props.config.startDate)
       const endDate = formatDate(props.config.endDate)
@@ -92,20 +95,30 @@ const GraphView: React.FC<GraphViewProps> = (props) => {
       const vis = new window.NeoVis.default(config)
       vis.render()
     }
+  }
+
+  React.useEffect(() => {
+    renderGraph()
+
   }, [props.config]);
 
   return(
-    <div style={{width: "100%", height: "100vh", margin: "0"}}>
-      <div id="viz"
-        style={{
-          width: "100%",
-          height:"100%",
-          margin: "0",
-        }}
-      >
-        読み込み中
+    <React.Fragment>
+      <div style={{width: "100%", height: "100vh", margin: "0"}}>
+        <div id="viz"
+          style={{
+            width: "100%",
+              height:"100%",
+              margin: "0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </div>
       </div>
-    </div>
+    </React.Fragment>
   )
 }
 
