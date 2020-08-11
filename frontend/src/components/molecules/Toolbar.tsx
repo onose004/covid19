@@ -11,9 +11,10 @@ import {
   Typography,
 } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
-// import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HelpIcon from '@material-ui/icons/Help';
+
+import HelpDialog from 'components/organisms/HelpDialog'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
 const Toolbar: React.FC<{classes?: object}> = (props) => {
   const classes = useStyles(props)
   const history = useHistory()
+  const [helpOpen, setHelpOpen] = React.useState(false)
   return(
     <Paper className={classes.root}
       elevation={3}
@@ -58,9 +59,13 @@ const Toolbar: React.FC<{classes?: object}> = (props) => {
         Cluster Viz β for 愛知県
       </Typography>
       <Divider flexItem orientation='vertical' className={classes.divider}/>
-      <IconButton className={classes.infoButton}>
+      <IconButton onClick={() => setHelpOpen(true)} className={classes.infoButton}>
         <HelpIcon />
       </IconButton>
+        <HelpDialog
+          open={helpOpen}
+          setOpen={setHelpOpen}
+        />
     </Paper>
   )
 }

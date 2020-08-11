@@ -1,6 +1,4 @@
-import React from 'react';
-
-export const NEO4J_URI = 'bolt://ik1-336-28372.vs.sakura.ne.jp:7687'
+export const NEO4J_URI = 'bolt://ik1-410-37495.vs.sakura.ne.jp:443'
 export const NEO4J_USER = 'neo4j'
 export const NEO4J_PASS = 'pass'
  
@@ -14,7 +12,6 @@ export const fetchDataSource = (): Promise<DataSource | undefined> => {
   var neo4j = require('neo4j-driver')
   var driver = neo4j.driver(NEO4J_URI, neo4j.auth.basic(NEO4J_USER, NEO4J_PASS))
   var session = driver.session()
-  var dataSource: any = undefined
   return new Promise((resolve, reject) => {
     session
       .run('MATCH (d:DataSource) WHERE d.pref_id="aichi" return d')

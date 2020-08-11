@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Tool: React.FC = (props) => {
-  const classes = useStyles()
+  const classes = useStyles(props)
   const [knobOpen, setKnobOpen] = React.useState(false)
   const [entryOpen, setEntryOpen] = React.useState(true)
   const [graphConfig, setGraphConfig] = React.useState<gc.GraphConfig | undefined>(
@@ -76,12 +76,12 @@ const Tool: React.FC = (props) => {
   const handleSetGraphConfig = async (newGraphConfig: gc.GraphConfig) => {
     const graphConfigDiff = (objDiff(graphConfig, newGraphConfig))
     await gc.setGraphConfig(newGraphConfig)
-    await setGraphConfig(newGraphConfig)
+    setGraphConfig(newGraphConfig)
     await ga.trackGraphConfigDiff(graphConfigDiff)
   }
   React.useEffect(() => {
     const f = async () => {
-      const conf = await gc.getGraphConfig().then(
+      gc.getGraphConfig().then(
         (conf: gc.GraphConfig) => setGraphConfig(conf)
       )
     }
