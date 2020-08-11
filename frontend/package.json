@@ -1,0 +1,73 @@
+{
+  "name": "cluster-vis",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@date-io/date-fns": "1.x",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^3.2.10",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.5",
+    "axios": "^0.19.2",
+    "date-fns": "^2.15.0",
+    "neo4j-driver": "^4.1.1",
+    "neovis-ts": "^1.0.8",
+    "neovis.js": "^1.4.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-ga": "^3.1.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "storybook-addon-material-ui": "^0.9.0-alpha.21",
+    "typescript": "~3.7.2",
+    "uuid": "^8.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-console": "^1.2.1",
+    "@storybook/addon-info": "^5.3.19",
+    "@storybook/addon-knobs": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addon-storysource": "^5.3.19",
+    "@storybook/addon-viewport": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/cli": "^5.3.19",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^5.3.19",
+    "@types/storybook__addon-actions": "^5.2.1",
+    "@types/storybook__addon-info": "^5.2.1",
+    "@types/storybook__addon-knobs": "^5.2.1",
+    "@types/storybook__react": "^5.2.1",
+    "react-docgen-typescript-loader": "^3.7.2"
+  }
+}
