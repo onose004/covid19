@@ -1,11 +1,8 @@
 import React from 'react';
 import {
-  AppBar,
-  Divider,
   Link,
   Typography,
   Toolbar as MuiToolbar,
-  CssBaseline,
 } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
 import * as api from 'api/neo4j'

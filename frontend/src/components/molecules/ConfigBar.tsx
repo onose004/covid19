@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-  AppBar,
   Divider,
   IconButton,
   Typography,

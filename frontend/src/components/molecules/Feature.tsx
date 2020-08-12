@@ -1,7 +1,4 @@
 import React from 'react';
-import {
-  useHistory,
-} from 'react-router-dom';
 
 import {
   Grid,
@@ -9,6 +6,8 @@ import {
   Typography,
 } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
+import NetworkVisualizationFig from 'components/atoms/NetworkVisualizationFig'
+import InteractiveGraphFig from 'components/atoms/InteractiveGraphFig'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -25,22 +24,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Feature: React.FC<{classes: object}> = (props) => {
   const classes = useStyles(props)
-  const history = useHistory() 
   return(
     <Paper classes={{root: classes.paper}}>
       <Grid container spacing={4} classes={{}} >
         <Grid item sm={6}>
+          <NetworkVisualizationFig />
           <Typography variant="h6">
             感染症発生事例のネットワーク構造を見える化
           </Typography>
           <Typography>
-            自治体による感染症事例の表形式の公開情報を使って、
+            自治体による感染症事例の表形式の公開情報から、
             ネットワーク構造を可視化します。
             可視化により、
             実際に発生しているクラスターを観察することができます。
           </Typography>
         </Grid>
         <Grid item sm={6}>
+          <InteractiveGraphFig />
           <Typography variant="h6">
             インタラクティブなグラフ表示
           </Typography>

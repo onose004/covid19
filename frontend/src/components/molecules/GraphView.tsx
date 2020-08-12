@@ -57,7 +57,7 @@ const GraphView: React.FC<GraphViewProps> = (props) => {
       q += `AND c.n_descendant > ${props.config.minDescendant} `
       q += `RETURN * ORDER BY c.date ${props.config.order} LIMIT ${props.config.maxNodes} `
       const config = {
-        encrypted: "ENCRYPTION_ON",
+        encrypted: api.ENABLE_SSL ? "ENCRYPTION_ON" : "ENCRYPTION_OFF",
         container_id: "viz",
         server_url: api.NEO4J_URI,
         server_user: api.NEO4J_USER,

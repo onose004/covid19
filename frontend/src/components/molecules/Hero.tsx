@@ -9,22 +9,27 @@ import {
 } from '@material-ui/core';  
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { makeStyles } from '@material-ui/core/styles';
+import MockWireframeFig from 'components/atoms/MockWireframeFig'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "relative",
     marginBottom: theme.spacing(4),
-    minHeight: theme.spacing(32),
+    minHeight: theme.spacing(48),
     [theme.breakpoints.down('xs')]: {
-      minHeight: theme.spacing(26),
+      minHeight: theme.spacing(48),
     },
   },
   content: {
     position: "absolute",
-    top: theme.spacing(6),
-    left: theme.spacing(0),
+    top: theme.spacing(12),
+    left: theme.spacing(2),
     [theme.breakpoints.down('xs')]: {
-      left: theme.spacing(2)
+      left: theme.spacing(0),
+      top: theme.spacing(2),
+    },
+    [theme.breakpoints.up('lg')]: {
+      left: theme.spacing(24),
     },
   },
   title: {
@@ -34,6 +39,27 @@ const useStyles = makeStyles((theme) => ({
       fontSize: theme.typography.h6.fontSize,
     },
   },
+  demo: {
+    transform: "perspective(500px) rotate3d(0.5, -0.5, 0.5, 45deg)",
+    position: "absolute",
+    top: theme.spacing(2),
+    right: theme.spacing(12),
+    width: theme.spacing(22),
+    [theme.breakpoints.down('xs')]: {
+      top: theme.spacing(6),
+      right: theme.spacing(8),
+    },
+    [theme.breakpoints.up('lg')]: {
+      right: theme.spacing(32),
+    },
+  },
+  demoImage: {
+    width: theme.spacing(19.25),
+    margin: theme.spacing(0, "auto"),
+    position: "absolute",
+    left: theme.spacing(1.25),
+    top: theme.spacing(4),
+  },
 }))
 
 const Hero: React.FC = (props) => {
@@ -41,6 +67,10 @@ const Hero: React.FC = (props) => {
   const history = useHistory() 
   return(
     <div className={classes.paper}>
+      <div className={classes.demo}>
+        <img src="/demo.gif" className={classes.demoImage} alt="" />
+        <MockWireframeFig />
+      </div>
       <div className={classes.content}>
         <Typography component="h1"
           className={classes.title}

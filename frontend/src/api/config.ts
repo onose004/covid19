@@ -11,9 +11,9 @@ export type GraphConfig = {
 
 export const defaultGraphConfig: GraphConfig = {
   hierarchical: false,
-  caption: 'sex',
-  community: '_enum_sex',
-  startDate: new Date('July 1 2020'),
+  caption: 'address',
+  community: '_enum_address',
+  startDate: new Date(Number(new Date()) - 1000 * 60 * 60 * 24 * 30),
   endDate: new Date(),
   order: "desc",
   maxNodes: 512,

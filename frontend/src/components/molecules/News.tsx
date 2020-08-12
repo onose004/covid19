@@ -34,6 +34,11 @@ type NewsItem = {
 
 const NewsList: NewsItem[] = [
   {
+    title: "基データの最終更新日時について",
+    content: "愛知県の発表している感染症発生事例の公開状況から、2020年8月13日現在のデータ最終更新日は8月6日までとなっています。ご利用にあたりご注意ください。",
+    date: new Date('2020-08-13'),
+  },
+  {
     title: "ClusterViz をリリース",
     content: "「感染症発生事例の公開情報からクラスターを見える化」する ClusterViz をリリースしました。",
     date: new Date('2020-08-12'),

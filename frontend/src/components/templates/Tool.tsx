@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import GraphView from 'components/molecules/GraphView'
 
 import Toolbar from 'components/molecules/Toolbar'
+import Suggestions from 'components/molecules/Suggestions'
 import ConfigBar from 'components/molecules/ConfigBar'
 import FooterBar from 'components/molecules/FooterBar'
 import KnobDialog from 'components/organisms/KnobDialog'
@@ -97,6 +98,18 @@ const Tool: React.FC = (props) => {
               root: classes.toolbarWidth,
             }}
           />
+        </div>
+        <div className={classes.suggestionsWrapper}>
+          { graphConfig &&
+            <Suggestions
+              config={graphConfig}
+              setConfig={handleSetGraphConfig}
+              classes={{
+                root: classes.toolbarWidth,
+                accordion: classes.suggestionsAccordion,
+              }}
+            />
+          }
         </div>
         <GraphView
           config={graphConfig}

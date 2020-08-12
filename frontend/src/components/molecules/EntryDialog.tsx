@@ -2,21 +2,15 @@ import React from 'react';
 import {
   Button,
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
+  Link,
   FormControlLabel,
   Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Switch,
 } from '@material-ui/core';  
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { makeStyles } from '@material-ui/core/styles';
-import * as neo4j from 'api/neo4j'
-import * as ga from 'api/ga'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -49,7 +43,7 @@ const EntryDialog: React.FC<EntryDialogProps> = (props) => {
       }
     }
     f()
-  }, [])
+  }, [props])
 
   return(
     <React.Fragment>
@@ -63,7 +57,11 @@ const EntryDialog: React.FC<EntryDialogProps> = (props) => {
               一次情報は必ず自治体の発表をあたってください。
             </Typography>
             <Typography variant="body2">
-              利用にあたり、利用規約やプライバシーポリシーの内容に同意したものとします。
+              利用にあたり、
+              <Link href="/about" target="_blank">
+                プライバシーポリシー
+              </Link>
+              の内容に同意したものとします。
             </Typography>
             <FormControlLabel
               className={classes.formControl}

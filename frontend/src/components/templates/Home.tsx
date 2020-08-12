@@ -4,21 +4,18 @@ import {
 } from 'react-router-dom';
 
 import {
-  Button,
   Container,
   CssBaseline,
   Divider,
   Link,
-  Toolbar,
   Typography,
 } from '@material-ui/core';  
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import { makeStyles } from '@material-ui/core/styles';
-
 import Hero from 'components/molecules/Hero'
 import Feature from 'components/molecules/Feature'
 import News from 'components/molecules/News'
+import Navbar from 'components/molecules/Navbar'
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -32,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(4),
   },
   copyright: {
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 0),
+    display: "flex",
+    justifyContent: "space-between",
   }
 }))
 
@@ -42,21 +41,7 @@ const Home: React.FC = (props) => {
   return(
     <div>
       <CssBaseline />
-        <Toolbar className={classes.toolbar}>
-          <Typography>
-            ClusterViz 愛知県版
-          </Typography>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => history.push('/tool')}
-            endIcon={
-              <ChevronRightIcon />
-            }
-          >
-            ClusterViz へ移動
-          </Button>
-        </Toolbar>
+      <Navbar />
       <Container>
         <main>
           <Hero />
@@ -64,9 +49,12 @@ const Home: React.FC = (props) => {
           <News classes={{root: classes.news}} />
         </main>
         <Divider />
-        <Typography component="h2" variant="caption" className={classes.copyright}>
+        <Typography variant="caption" className={classes.copyright}>
           <Link href="https://www.hashup.pro" target="_blank" color="inherit">
             &copy; Hashup Inc.
+          </Link>
+          <Link href="/about" color="inherit">
+            当サイトについて
           </Link>
         </Typography>
       </Container>
