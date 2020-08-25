@@ -8,7 +8,10 @@ const lightTheme = createMuiTheme({
     primary: pink,
     secondary: cyan,
     type: "light",
-  }
+  },
+  shape: {
+    borderRadius: 16
+  },
 });
 
 export const darkTheme = createMuiTheme({

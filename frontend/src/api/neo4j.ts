@@ -1,7 +1,8 @@
 export const ENABLE_SSL = true
 const PORT = ENABLE_SSL ? "443" : "80"
-const NEO4J_HOST = 'bolt://ik1-410-37495.vs.sakura.ne.jp'
-export const NEO4J_URI = `${NEO4J_HOST}:${PORT}`
+const NEO4J_HOST = 'bolt://ik1-336-28372.vs.sakura.ne.jp'
+const NEO4J_LOCATION = ''
+export const NEO4J_URI = `${NEO4J_HOST}:${PORT}/${NEO4J_LOCATION}`
 export const NEO4J_USER = 'neo4j'
 export const NEO4J_PASS = 'pass'
  
