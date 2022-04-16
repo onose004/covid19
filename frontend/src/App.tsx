@@ -13,7 +13,6 @@ import * as H from 'history'
 
 // import { ThemeProvider } from "@material-ui/styles"
 import Home from "components/templates/Home"
-import Tool from "components/templates/Tool"
 import Misc from "components/templates/Misc"
 import * as ga from "api/ga"
 
@@ -28,7 +27,6 @@ const App: React.FC = () => {
       <Router history={history}>
         <Switch>
           <Route path={"/"} component={Home} exact />
-          <Route path={"/tool"} component={Tool} exact />
           <Route path={"/about"} component={Misc} exact />
         </Switch>
       </Router>
