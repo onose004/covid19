@@ -34,6 +34,11 @@ type NewsItem = {
 
 const NewsList: NewsItem[] = [
   {
+    title: "ツールの提供終了",
+    content: "ツールの提供を終了しました。",
+    date: new Date('2022-04-16'),
+  },
+  {
     title: "技術的な解説記事を公開しました",
     content: <React.Fragment>
       Qiita にて技術的な側面から紹介する記事を投稿しました: 「<a href="https://qiita.com/onose004/items/98c2f3971c83a4c7ff92">グラフ型データベースを使って COVID-19 のクラスターを可視化した</a>」

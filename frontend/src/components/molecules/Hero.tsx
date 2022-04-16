@@ -82,14 +82,18 @@ const Hero: React.FC = (props) => {
         <Button
           color="primary"
           variant="contained"
-          onClick={() => history.push('/tool')}
+          onClick={() => {}}
           endIcon={
             <ChevronRightIcon />
           }
+          disabled={true}
         >
           ClusterViz
           を使う
         </Button>
+        <p>
+          ※ツールの提供は終了しました。
+        </p>
       </div>
     </div>
   )

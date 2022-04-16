@@ -33,18 +33,6 @@ const Navbar: React.FC<{classes?: object}> = (props) => {
               ClusterViz 愛知県版
             </Link>
           </Typography>
-          <div>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => history.push('/tool')}
-              endIcon={
-                <ChevronRightIcon />
-              }
-            >
-              使う
-            </Button>
-          </div>
         </Toolbar>
       <Divider />
     </div>
